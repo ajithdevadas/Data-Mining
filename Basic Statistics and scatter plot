@@ -1,0 +1,152 @@
+library(xlsx)
+setwd("C:/Users/adevadas/Desktop/Tasks/Pers/Seema Resume/NJIT/Data Mining/R")
+y <- read.xlsx("./Sep 24/data_akbilgic.xlsx", sheetIndex = 1, startRow = 2)
+
+# Mode function.
+calcMode <- function(x) {
+  uniqueValues <- unique(x)
+  uniqueValues[which.max(tabulate(match(x, uniqueValues)))]
+}
+
+#1.ISEUSD
+meanISEUSD <- apply(y[3],2,mean)
+medianISEUSD <- apply(y[3],2,median)
+modeISEUSD <-  apply(y[3],2,calcMode)
+SDISEUSD <- apply(y[3],2,sd)
+VarISEUSD <- apply(y[3],2,var)
+
+#1.SP
+meanSP <- apply(y[4],2,mean)
+medianSP <- apply(y[4],2,median)
+modeSP <-  apply(y[4],2,calcMode)
+SDSP <- apply(y[4],2,sd)
+VarSP <- apply(y[4],2,var)
+
+#1.DAX
+meanDAX <- apply(y[5],2,mean)
+medianDAX <- apply(y[5],2,median)
+modeDAX <-  apply(y[5],2,calcMode)
+SDDAX <- apply(y[5],2,sd)
+VarDAX <- apply(y[5],2,var)
+
+#1.FTSE
+meanFTSE <- apply(y[6],2,mean)
+medianFTSE <- apply(y[6],2,median)
+modeFTSE <-  apply(y[6],2,calcMode)
+SDFTSE <- apply(y[6],2,sd)
+VarFTSE <- apply(y[6],2,var)
+
+#1.NIKKEI
+meanNIKKEI <- apply(y[7],2,mean)
+medianNIKKEI <- apply(y[7],2,median)
+modeNIKKEI <-  apply(y[7],2,calcMode)
+SDNIKKEI <- apply(y[7],2,sd)
+VarNIKKEI <- apply(y[7],2,var)
+
+#1.BOVESPA
+meanBOVESPA <- apply(y[8],2,mean)
+medianBOVESPA <- apply(y[8],2,median)
+modeBOVESPA <-  apply(y[8],2,calcMode)
+SDBOVESPA <- apply(y[8],2,sd)
+VarBOVESPA <- apply(y[8],2,var)
+
+#1.EU
+meanEU <- apply(y[9],2,mean)
+medianEU <- apply(y[9],2,median)
+modeEU <-  apply(y[9],2,calcMode)
+SDEU <- apply(y[9],2,sd)
+VarEU <- apply(y[9],2,var)
+
+#1.EM
+meanEM <- apply(y[10],2,mean)
+medianEM <- apply(y[10],2,median)
+modeEM <-  apply(y[10],2,calcMode)
+SDEM <- apply(y[10],2,sd)
+VarEM <- apply(y[10],2,var)
+
+print("ISE USD")
+cat("Mean of ISE USD Based is ", meanISEUSD )
+cat("Median of ISE USD Based is ", medianISEUSD )
+cat("Mode of ISE USD Based is ", modeISEUSD )
+cat("Standard Deviation of ISE USD Based is ", SDISEUSD )
+cat("Variance of ISE USD Based is ", VarISEUSD )
+
+print("SP")
+cat("Mean of SP is ", meanSP )
+cat("Median of SP is ", medianSP )
+cat("Mode of SP is ", modeSP )
+cat("Standard Deviation of SP is ", SDSP )
+cat("Variance of SP is ", VarSP )
+
+print("DAX")
+cat("Mean of DAX is ", meanDAX )
+cat("Median of DAX is ", medianDAX )
+cat("Mode of DAX is ", modeDAX )
+cat("Standard Deviation of DAX is ", SDDAX )
+cat("Variance of DAX is ", VarDAX )
+
+print("FTSE")
+cat("Mean of FTSE is ", meanFTSE )
+cat("Median of FTSE is ", medianFTSE )
+cat("Mode of FTSE is ", modeFTSE )
+cat("Standard Deviation of FTSE is ", SDFTSE )
+cat("Variance of FTSE is ", VarFTSE )
+
+print("NIKKEI")
+cat("Mean of NIKKEI is ", meanNIKKEI )
+cat("Median of NIKKEI is ", medianNIKKEI )
+cat("Mode of NIKKEI is ", modeNIKKEI )
+cat("Standard Deviation of NIKKEI is ", SDNIKKEI )
+cat("Variance of NIKKEI is ", VarNIKKEI )
+
+print("BOVESPA")
+cat("Mean of BOVESPA is ", meanBOVESPA )
+cat("Median of BOVESPA is ", medianBOVESPA )
+cat("Mode of BOVESPA is ", modeBOVESPA )
+cat("Standard Deviation of BOVESPA is ", SDBOVESPA )
+cat("Variance of BOVESPA is ", VarBOVESPA)
+
+print("EU")
+cat("Mean of EU is ", meanEU )
+cat("Median of EU is ", medianEU )
+cat("Mode of EU is ", modeEU )
+cat("Standard Deviation of EU is ", SDEU )
+cat("Variance of EU is ", VarEU)
+
+print("EM")
+cat("Mean of EM is ", meanEM )
+cat("Median of EM is ", medianEM )
+cat("Mode of EM is ", modeEM )
+cat("Standard Deviation of EM is ", SDEM )
+cat("Variance of EM is ", VarEM)
+
+#2
+boxplot(y[3])
+boxplot(y[4])
+boxplot(y[5])
+boxplot(y[6])
+boxplot(y[7])
+boxplot(y[8])
+boxplot(y[9])
+boxplot(y[10])
+
+outliersISEUSD <- boxplot(y[3])$out
+
+#3
+plot(y$ISE.1,y$EM)
+
+#4
+cor(y$ISE.1, y$EM)
+
+#5
+cor (y$NIKKEI, y$BOVESPA)
+
+
+
+
+
+  
+
+
+
+
