@@ -1,0 +1,95 @@
+
+1. Which two cars are most similar?
+
+The dataset is car evaluation data with multivariate categorical attributes. They are as follows:
+Attributes:
+
+1. buying: vhigh, high, med, low.
+2. maint: vhigh, high, med, low.
+3. doors: 2, 3, 4, 5more.
+4. persons: 2, 4, more.
+5. lug_boot: small, med, big.
+6. safety: low, med, high.
+7. Class value: unacc, acc, good, vgood
+
+All of these attributes can be treated as ordinal as they have a meaningful order or ranking even
+though the magnitude between successive values is unknown.
+
+To find the most similar cars we must calculate the dissimilarity matrix for the above data set, find
+the lowest value in the matrix and find the matrix locations where the values can be seen .
+
+Below steps are followed:
+
+1. Rank the values for each attribute
+For eg : buying can take any of the 4 values vhigh,high,med and low.
+Here range = 4
+Rank each value according to their order: vhigh = 1, high=2, med=3 and low=4.
+
+2. Perform data normalization (Interval-Scaling) for each attribute value
+Eg: normalized values for buying attribute
+vhigh = (rank – 1) / (range - 1)
+vhigh = (1-1) / (4-1) = 0.
+Similarly, high = (2-1) / (4-1) = 1/3 = 0.3333333
+
+3. Using dist function in R, compute the dissimilarity matrix. The dissimilarity matrix will
+contain Euclidean distance values.
+
+4. Take unique values from the matrix as the matrix is symmetric about its diagonal
+
+5. Sort (and save) the resulting set to find the min value from the matrix ( which corresponds
+to highest similarity). The Min value is Zero and upon checking it has been determined that
+the resultant pairs constitute the diagonal of the dissimilarity matrix. The next min value (min
+non-zero value; which is 0.333333) is fetched to find the similar pairs.
+
+6. In the dissimilarity matrix there are 4520 matches found with value = 0.3333333 which
+means that 2260 pairs have the most similarity.
+
+7. The most similar pairs (2260 pairs) can be seen in the output file “Question1-
+SimilarCars.csv”. [Values are not copied over here as the number of records is high.]
+
+2. Which two cars are most dissimilar?
+
+From the sorted data (#1.5) find the max value. This corresponds to highest dissimilarity.
+The max value is 2.645751
+In the given data set below pairs are the most dissimilar ones as the cells [1, 1728] & [82,
+1647] have value = 2.645751.
+
+1. Cars 1 & 1728
+
+2. Cars 82 & 1647
+
+The most similar pairs (2 pairs) can be seen in the output file “Question2-
+DissimilarCars.csv”.
+
+3. Find the two categorical attributes that have the highest
+positive/negative correlation. Draw a scatter plot of these two
+attributes.
+
+Using the interval scaled dataset calculated from #1.2, derive the correlation matrix using
+COR function in R.
+
+The maximum correlation value found in the matrix is 1 which constitutes the diagonal cells
+in the matrix. There are no cells other than the diagonal cells having correlation = 1.
+The second highest correlation value (0.4393373) is found and the corresponding cells are
+determined.
+
+The cells determined are (6,7). Hence the columns V6 (Safety) and V7 (Class Values) are
+having the highest positive correlation, with a correlation coefficient of 0. 4393373.
+
+None of the attributes have negative correlation.
+
+The columns having highest correlation can be seen in the output file “Question3-
+HighlyCorrelatedAttributes.csv”
+
+Here is the scatter plot of ‘Safety’ and ‘Class Values’.
+
+4. Present the dissimilarity matrix for the very good cars.
+
+A subset of the interval scaled dataset calculated from #1.2 is derived by filtering all records that
+are not having Class Value = vgood.
+
+Using dist function in R, compute the dissimilarity matrix. The dissimilarity matrix will contain
+Euclidean distance values.
+
+The dissimilarity matrix of very good cars can be seen in the output file “Question4-
+DissimiarityMatrix.csv”. [Values are not copied over here as the number of records is high.]
