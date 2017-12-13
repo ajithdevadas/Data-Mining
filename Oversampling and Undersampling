@@ -1,0 +1,102 @@
+#install packages
+install.packages("ROSE")
+install.packages("rpart")
+install.packages("randomForest")
+
+library(ROSE)
+library(rpart) #for decision tree algorithm
+library(randomForest)
+
+data(hacide)
+str(hacide.train)
+
+#check table
+table(hacide.train$cls)
+
+#check classes distribution
+prop.table(table(hacide.train$cls))
+
+#using decision tree algorithm for modeling
+treeimb <- rpart(cls ~ ., data = hacide.train)
+pred.treeimb <- predict(treeimb, newdata = hacide.test)
+
+#check the accuracy of this prediction
+accuracy.meas(hacide.test$cls, pred.treeimb[,2])
+
+#check the final accuracy of this model using ROC curve
+roc.curve(hacide.test$cls, pred.treeimb[,2], plotit = T)
+
+####checking with randomForest
+
+#using randomForest algorithm for modeling
+treeimbRF <- randomForest(cls ~ ., hacide.train, ntree=10, importance=T)
+pred.treeimbRF <- predict(treeimbRF, hacide.test)
+
+#check the accuracy of this prediction
+accuracy.meas(hacide.test$cls, pred.treeimbRF)
+
+#check the final accuracy of this model using ROC curve
+roc.curve(hacide.test$cls, pred.treeimbRF, plotit = T)
+
+
+#oversampling and balance the data
+data_balanced_over <- ovun.sample(cls ~ ., data = hacide.train, method = "over",N = 1960)$data
+table(data_balanced_over$cls)
+
+#undersampling and balance the data
+data_balanced_under <- ovun.sample(cls ~ ., data = hacide.train, method = "under", N = 40, seed = 1)$data
+table(data_balanced_under$cls)
+
+#oversampling and undersampling
+data_balanced_both <- ovun.sample(cls ~ ., data = hacide.train, method = "both", p=0.5, N=1000, seed = 1)$data
+table(data_balanced_both$cls)
+
+#ROSE [Random Over-Sampling Examples]
+data.rose <- ROSE(cls ~ ., data = hacide.train, seed = 1)$data
+table(data.rose$cls)
+
+#build decision tree models
+tree.rose <- rpart(cls ~ ., data = data.rose)
+tree.over <- rpart(cls ~ ., data = data_balanced_over)
+tree.under <- rpart(cls ~ ., data = data_balanced_under)
+tree.both <- rpart(cls ~ ., data = data_balanced_both)
+
+#build random forest models
+RF.rose <- randomForest(cls ~ ., data.rose, ntree=10, importance=T)
+RF.over <- randomForest(cls ~ ., data_balanced_over, ntree=10, importance=T)
+RF.under <- randomForest(cls ~ ., data_balanced_under, ntree=10, importance=T)
+RF.both <- randomForest(cls ~ ., data_balanced_both, ntree=10, importance=T)
+
+#make predictions on unseen data - using decision tree
+pred.tree.rose <- predict(tree.rose, newdata = hacide.test)
+pred.tree.over <- predict(tree.over, newdata = hacide.test)
+pred.tree.under <- predict(tree.under, newdata = hacide.test)
+pred.tree.both <- predict(tree.both, newdata = hacide.test)
+
+#make predictions on unseen data - using random forest
+pred.RF.rose <- predict(RF.rose, hacide.test)
+pred.RF.over <- predict(RF.over, hacide.test)
+pred.RF.under <- predict(RF.under, hacide.test)
+pred.RF.both <- predict(RF.both, hacide.test)
+
+#AUC - Decision Tree
+
+roc.curve(hacide.test$cls, pred.tree.rose[,2], plotit = T) #0.989
+roc.curve(hacide.test$cls, pred.tree.over[,2], plotit = T) #0.798
+roc.curve(hacide.test$cls, pred.tree.under[,2], plotit = T) #0.867
+roc.curve(hacide.test$cls, pred.tree.both[,2], plotit = T) #0798
+
+#AUC - Random Forest
+
+roc.curve(hacide.test$cls, pred.RF.rose, plotit = T) #0.865
+roc.curve(hacide.test$cls, pred.RF.over, plotit = T) #0.698
+roc.curve(hacide.test$cls, pred.RF.under, plotit = T) #0.865
+roc.curve(hacide.test$cls, pred.RF.both, plotit = T) #0794
+
+
+
+
+
+
+
+
